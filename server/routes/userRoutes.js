@@ -1,8 +1,10 @@
-import express from "express"
-import { clerkWebhooks } from "../controllers/UserController.js"
+import express from "express";
+import { userCredits, clerkWebhooks } from "../controllers/UserController.js";
+import authUser from "../middlewares/auth.js";
 
-const userRouter = express.Router()
+const router = express.Router();
 
-userRouter.post("/webhooks", clerkWebhooks)
+router.post("/webhooks", clerkWebhooks);
+router.get("/credits", authUser, userCredits);
 
-export default userRouter
+export default router;

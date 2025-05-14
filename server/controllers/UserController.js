@@ -71,4 +71,25 @@ const clerkWebhooks = async (req, res) => {
 
 }
 
-export { clerkWebhooks }
+const userCredits = async (req, res) => {
+  try {
+    const { clerkId } = req;
+    if (!clerkId) {
+      return res.status(401).json({ success: false, message: "Unauthorized: clerkId missing" });
+    }
+
+    const userData = await userModel.findOne({ clerkId });
+    if (!userData) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    return res.json({ success: true, credits: userData.creditBalance });
+  } catch (error) {
+    console.error("userCredits error:", error);
+    return res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+
+
+export { clerkWebhooks, userCredits }
